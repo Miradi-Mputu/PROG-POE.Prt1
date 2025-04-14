@@ -42,7 +42,7 @@ public class Main {
         boolean isCellValid;
         do {
             cellPhoneNumber = JOptionPane.showInputDialog("Enter your cellphone number (must start with +27 and be 10 characters long):");
-            isCellValid = isValidCellphone(cellPhoneNumber);
+            isCellValid = phoneNumberComplexity(cellPhoneNumber);
             if (!isCellValid) {
                 JOptionPane.showMessageDialog(null, "Invalid cellphone number. Please try again.");
             }
@@ -97,7 +97,7 @@ public class Main {
         return hasUpper && hasLower && hasDigit && hasSpecial;
     }
 
-    public static boolean isValidCellphone (String cellphoneNumber) {
+    public static boolean phoneNumberComplexity (String cellphoneNumber) {
         // Check if the string is not null or empty, matches the pattern of digits and/or '+', and has at least 8 characters
         return cellphoneNumber != null && cellphoneNumber.matches("^[0-9+]+$") && cellphoneNumber.length() >= 8;
     }
