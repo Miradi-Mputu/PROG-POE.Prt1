@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class Main {
     public static void main(String[] args) {
         String firstName;
@@ -21,7 +20,7 @@ public class Main {
         boolean isUsernameValid;
         do {
             username = JOptionPane.showInputDialog("Enter a username (at least 5 characters and contains an underscore):");
-            isUsernameValid = isValidUsername(username);
+            isUsernameValid = usernameComplexity(username);
             if (!isUsernameValid) {
                 JOptionPane.showMessageDialog(null, "Invalid username. Please try again.");
             }
@@ -32,7 +31,7 @@ public class Main {
         boolean isPasswordValid;
         do {
             password = JOptionPane.showInputDialog("Enter your password (8+ characters, capital letter, number, special character):");
-            isPasswordValid = isValidPassword(password);
+            isPasswordValid = passwordComplexity(password);
             if (!isPasswordValid) {
                 JOptionPane.showMessageDialog(null, "Invalid password. Please try again.");
             }
@@ -49,13 +48,27 @@ public class Main {
             }
         } while (!isCellValid);
         JOptionPane.showMessageDialog(null, "Cellphone number successfully added: " + cellPhoneNumber);
+
+        // Login functionality
+        boolean loginSuccessful = false;
+        do {
+            String enteredUsername = JOptionPane.showInputDialog("Login - Enter your username:");
+            String enteredPassword = JOptionPane.showInputDialog("Login - Enter your password:");
+
+            if (enteredUsername.equals(username) && enteredPassword.equals(password)) {
+                JOptionPane.showMessageDialog(null, "Login successful. Welcome back, " + firstName + "!");
+                loginSuccessful = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid login credentials. Please try again.");
+            }
+        } while (!loginSuccessful);
     }
 
-    public static boolean isValidUsername(String username) {
-        return username != null && username.length() <= 5 && username.contains("_");
+    public static boolean usernameComplexity(String username) {
+        return username != null && username.length() >= 5 && username.contains("_");
     }
 
-    public static boolean isValidPassword(String password) {
+    public static boolean passwordComplexity(String password) {
         if (password == null || password.length() < 8) {
             return false;
         }
@@ -73,7 +86,7 @@ public class Main {
             } else if (Character.isLowerCase(c)) {
                 hasLower = true;
             } else {
-                // Use a regular expression to check for special characters (anything not alphanumeric)
+                // Use a regular expression to check for special characters
                 Pattern specialPattern = Pattern.compile("[^a-zA-Z0-9]");
                 Matcher specialMatcher = specialPattern.matcher(String.valueOf(c));
                 if (specialMatcher.find()) {
@@ -81,14 +94,11 @@ public class Main {
                 }
             }
         }
-        // Return true only if all the required character types are present
         return hasUpper && hasLower && hasDigit && hasSpecial;
-
     }
 
     public static boolean isValidCellphone (String cellphoneNumber) {
         // Check if the string is not null or empty, matches the pattern of digits and/or '+', and has at least 8 characters
         return cellphoneNumber != null && cellphoneNumber.matches("^[0-9+]+$") && cellphoneNumber.length() >= 8;
     }
-
 }
